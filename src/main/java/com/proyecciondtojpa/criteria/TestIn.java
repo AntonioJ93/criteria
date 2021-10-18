@@ -5,8 +5,6 @@ package com.proyecciondtojpa.criteria;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
-
 import com.proyecciondtojpa.criteria.Item;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +27,7 @@ public class TestIn {
     public static void main(String[] args) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
-        
+
 //        em.getTransaction().begin();
 //        Item i1=new Item("art1", 10.0);
 //        Item i2=new Item("art2", 20.0);
@@ -41,7 +39,6 @@ public class TestIn {
 //        em.persist(i4);
 //        
 //        em.getTransaction().commit();
-        
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaQuery<Item> criteriaQuery = criteriaBuilder.createQuery(Item.class);
         Root<Item> root = criteriaQuery.from(Item.class);
@@ -49,21 +46,20 @@ public class TestIn {
         List<String> names = new ArrayList<>();
         names.add("art1");
         names.add("art2");
-        
-        Predicate mayorQ10=criteriaBuilder.gt(root.get("itemPrecio"), 10);
-        Predicate losDos= criteriaBuilder.and(inClause,mayorQ10);
-        
+
+        Predicate mayorQ10 = criteriaBuilder.gt(root.get("itemPrecio"), 10);
+        Predicate losDos = criteriaBuilder.or(inClause, mayorQ10);
+
         for (String title : names) {
             inClause.value(title);
         }
         criteriaQuery.select(root).where(losDos);
-        TypedQuery<Item> query=em.createQuery(criteriaQuery);
-        List<Item> items=query.getResultList();
-        
-        for(Item item:items){
-            System.out.println("itemName:"+item.getItemName()+ " precio:"+item.getItemPrecio());
+        TypedQuery<Item> query = em.createQuery(criteriaQuery);
+        List<Item> items = query.getResultList();
+
+        for (Item item : items) {
+            System.out.println("itemName:" + item.getItemName() + " precio:" + item.getItemPrecio());
         }
-       
 
     }
 }
