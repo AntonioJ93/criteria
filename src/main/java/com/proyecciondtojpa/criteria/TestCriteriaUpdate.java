@@ -21,14 +21,14 @@ public class TestCriteriaUpdate {
 
     public static void main(String[] args) {
         
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("criteria_samples");
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory("pu");
         EntityManager em = emf.createEntityManager();
         CriteriaBuilder criteriaBuilder = em.getCriteriaBuilder();
         CriteriaUpdate<Item> criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Item.class);
      
         Root<Item> root = criteriaUpdate.from(Item.class);
-        criteriaUpdate.set("itemPrice", 25);
-        criteriaUpdate.where(criteriaBuilder.equal(root.get("itemPrice"), 10));
+        criteriaUpdate.set("itemPrecio", 25);
+        criteriaUpdate.where(criteriaBuilder.equal(root.get("itemPrecio"), 10));
 
         em.getTransaction().begin();
         em.createQuery(criteriaUpdate).executeUpdate();
